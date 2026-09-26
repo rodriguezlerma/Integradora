@@ -9,6 +9,7 @@ public class Zoo {
     private String legalRepresentative;
     private double budget;
 
+    private Staff Workers[];
   
 
     public Zoo(String name, String city, String address, String id, String legalRepresentative, double budget){
@@ -20,6 +21,8 @@ public class Zoo {
         this.id = id;
         this.legalRepresentative = legalRepresentative;
         this.budget = budget;
+
+        Staff workers[] = new Staff[20];
     }
 
     public void setName(String name){

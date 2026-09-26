@@ -34,7 +34,6 @@ public class ZooCareMain {
             case 1:
 
                 registerGeneralInformation();
-                
                 break;
 
             case 2: 
@@ -105,14 +104,14 @@ public class ZooCareMain {
 
     public static String validarTexto() {
 
-    String texto = sc.nextLine();
+    String text = sc.nextLine();
 
-    while (texto.trim().isEmpty()) {
+    while (text.trim().isEmpty()) {
         System.out.println("El texto no puede estar vacío. Intentelo de nuevo: ");
-        texto = sc.nextLine();
+        text = sc.nextLine();
     }
 
-    return texto;
+    return text;
 }
     public static void modifyGeneralInformation(){
 
@@ -203,6 +202,40 @@ public class ZooCareMain {
         System.out.println("\nIngresa primero los datos generales del zoologico.");
     }
     }
+
+    public static void staffRegister(){
+
+        System.out.println("Digita el nombre del trabajador: ");
+        String name = validarTexto();
+
+        System.out.println("Digite numero de telefono, tiene que tener 10 caracteres: ");
+        String phone = sc.nextLine();
+
+
+    }
+
+    public static String numberValidation(){
+
+        String text = sc.nextLine();
+
+        while (text.length() == 10) {
+
+            for (int i = 0; i < text.length(); i++){
+
+                char digit = text.charAt(i);
+
+                if (!Character.isDigit(digit)){
+
+                   
+                }else{
+
+                }
+
+                }
+        }
+            
+
     }
 
 
+}
