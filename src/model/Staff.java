@@ -1,23 +1,27 @@
 package model;
 
 public class Staff {
+
+   private static int nextId = 1;
+
+   private int uniqueId;
    private String name;
    private String phone;
-   private String mail;
+   private String email;
    private String rol;
-   private String status;     
+   private boolean status;     
    
-   public Staff(String name, String phone, String mail, String rol, String status){
+   public Staff(String name, String phone, String email, String rol, boolean status){
 
-    this.name = name;
-    this.phone = phone;
-    this.mail = mail;
-    this.rol = rol;
-    this.status = status;
-
+      this.uniqueId = nextId;
+      nextId++;
+      this.name = name;
+      this.phone = phone;
+      this.email = email;
+      this.rol = rol;
+      this.status = status;
    }
 
-    
 }
 
 

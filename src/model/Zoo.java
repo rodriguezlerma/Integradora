@@ -9,8 +9,8 @@ public class Zoo {
     private String legalRepresentative;
     private double budget;
 
-    private Staff Workers[];
-  
+    private Habitat[] myHabitats;
+
 
     public Zoo(String name, String city, String address, String id, String legalRepresentative, double budget){
 
@@ -22,8 +22,19 @@ public class Zoo {
         this.legalRepresentative = legalRepresentative;
         this.budget = budget;
 
-        Staff workers[] = new Staff[20];
+        this.myHabitats = new Habitat[33];
+        veterinaryClinic();
+
     }
+
+    public void veterinaryClinic(){
+        for (int i = 0; i < 4; i++) {
+
+        myHabitats[i] = new Habitat("Clinica veterinaria", "medico", 27, 400, 40000000, 25, "activo");
+            
+        }
+    }
+
 
     public void setName(String name){
 
@@ -65,5 +76,56 @@ public class Zoo {
                 +"\nPresupuesto del zoologico: "+budget;
     }
     
-}
+    public boolean hasAvailableHabitat() {
+
+        if (myHabitats != null) {
+
+            for (int i = 0; i < myHabitats.length; i++) {
+                if (myHabitats[i] == null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     
+    }
+
+    public boolean addHabitats(String name, String environment, double temperature, double area, double budget, int capacity, String status  ){
+
+        if(hasAvailableHabitat()){
+
+            for (int i = 0; i < myHabitats.length; i++) {
+
+                if (myHabitats[i] == null){
+
+                myHabitats[i] = new Habitat(name, environment,temperature, area, budget, capacity, status);
+            return true;
+        }
+    }
+}return false;
+}
+    public String getHabitats(){
+
+        String habitatsList = "";
+
+        if(myHabitats != null){
+
+            for (int i = 0; i < myHabitats.length; i++) {
+
+                if(myHabitats[i] != null){
+
+                    habitatsList +=  "\n-" + myHabitats[i].getName();
+
+                }    
+                
+            
+        }
+    }
+    
+    return habitatsList;
+
+    }
+
+
+}
+
