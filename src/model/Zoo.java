@@ -1,7 +1,7 @@
 package model;
 
 public class Zoo {
-
+    
     private String name;
     private String city;
     private String address;
@@ -27,12 +27,12 @@ public class Zoo {
 
     }
 
-    public void veterinaryClinic(){
-        for (int i = 0; i < 4; i++) {
+    private void veterinaryClinic(){
+        
 
-        myHabitats[i] = new Habitat("Clinica veterinaria", "medico", 27, 400, 40000000, 25, "activo");
+        new Habitat("Clinica veterinaria",calculateEnvironmentType(4), 27, 400, 40000000, 25, "activo");
             
-        }
+        
     }
 
 
@@ -90,7 +90,7 @@ public class Zoo {
     
     }
 
-    public boolean addHabitats(String name, String environment, double temperature, double area, double budget, int capacity, String status  ){
+    public boolean addHabitats(String name, int environment, double temperature, double area, double budget, int capacity, String status  ){
 
         if(hasAvailableHabitat()){
 
@@ -98,7 +98,7 @@ public class Zoo {
 
                 if (myHabitats[i] == null){
 
-                myHabitats[i] = new Habitat(name, environment,temperature, area, budget, capacity, status);
+                myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status);
             return true;
         }
     }
@@ -114,18 +114,45 @@ public class Zoo {
 
                 if(myHabitats[i] != null){
 
-                    habitatsList +=  "\n-" + myHabitats[i].getName();
+                    habitatsList +=  "\n" + myHabitats[i].getName();
 
                 }    
                 
             
+        }
+        if (habitatsList.equals("")){
+
+            return "No hay animales en este habitat. ";
         }
     }
     
     return habitatsList;
 
     }
+    public EnvironmentType calculateEnvironmentType (int environmentOpcion){
 
+        //LAND,WATER,AVIARY,MEDICAL
+
+
+        EnvironmentType[] values = EnvironmentType.values();
+
+        return values[environmentOpcion - 1 ];
+    }
+
+    public String getEnvironmentTypeList(){
+
+        String environmentList = "";
+
+        EnvironmentType[] values = EnvironmentType.values();
+
+        for (int index = 0; index < values.length; index++){
+
+
+            environmentList += (index+1)+"."+values[index].getTypeName()+"\n";
+        }
+
+        return environmentList;
+    }
 
 }
 

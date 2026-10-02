@@ -213,20 +213,19 @@ public class ZooCareMain {
         
 
     }
-    public static String environmentValidation(){
+    public static int environmentValidation(){
 
-            String environment = sc.nextLine().toLowerCase();
+             int environment = sc.nextInt();
 
             while(true){
 
-                if (environment.equals("terrestre") || environment.equals("acuatico") || 
-                environment.equals("aviario") || environment.equals("medico")){
+                if (environment > 0 && environment <= 4){
 
                     return environment;
 
                 }
                     System.out.println("Datos no validos, intentelo de nuevo: ");
-                    environment = sc.nextLine().toLowerCase();
+                    environment = sc.nextInt();
             }
     }
     public static String rolValidation(){
@@ -311,8 +310,9 @@ public class ZooCareMain {
             System.out.println("\nDigita el nombre del habitat: ");
             String name = validarTexto();
 
-            System.out.println("\nDigite el tipo de ambiente (terrestre, acuatico, aviario, medico): ");
-            String environment = environmentValidation();
+            System.out.println("Ingrese el tipo de ambiente: ");
+            System.out.println(myZoo.getEnvironmentTypeList());
+            int environment = environmentValidation();
 
             System.out.println("\nIngresa la temperatura del habitat: ");
             double temperature = sc.nextDouble();
