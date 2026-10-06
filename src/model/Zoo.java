@@ -1,6 +1,12 @@
 package model;
+import java.util.ArrayList;
 
 public class Zoo {
+    
+    public static int maxHabitats = 33;
+    
+    public static int capacityMax = 4; // Starting capacity for the veterinary clinic
+
     
     private String name;
     private String city;
@@ -8,10 +14,10 @@ public class Zoo {
     private String id;
     private String legalRepresentative;
     private double budget;
-
+    private ArrayList<Staff> employees;
     private Habitat[] myHabitats;
 
-
+  
     public Zoo(String name, String city, String address, String id, String legalRepresentative, double budget){
 
 
@@ -21,16 +27,74 @@ public class Zoo {
         this.id = id;
         this.legalRepresentative = legalRepresentative;
         this.budget = budget;
+        
+        employees = new ArrayList<>();
 
-        this.myHabitats = new Habitat[33];
+        
+        myHabitats = new Habitat[maxHabitats];
+
         veterinaryClinic();
 
     }
+    public void sumCapacityMax(int position){
+        capacityMax += position;
+
+    }
+
+
+    public Staff searchStaff(String codeStaff){
+
+        for(int i = 0; i < employees.size(); i++){
+
+            if(employees.get(i).getUniqueId().equalsIgnoreCase(codeStaff)){
+
+                return employees.get(i);
+            }
+        }
+
+        return null;
+
+    }
+
+    public String showStaffList(){
+
+        String staffList = "";
+
+        if(employees != null){
+
+            for(int i = 0; i < employees.size(); i++){
+
+                if(employees.get(i) != null){
+
+                    staffList += "\n" + employees.get(i).getUniqueId() + " - " + employees.get(i).getName();
+                }
+            }
+        }
+
+        return staffList;
+    }
+
+    public boolean addStaff(String name, String phone, String email, String rol, boolean status){
+        
+        for(int i = 0; i < employees.size(); i++){
+            if(employees != null){
+                Staff newStaff = new Staff(name, phone, email, rol, status);
+                employees.set(i, newStaff);
+                return true;
+            }
+        }
+
+        Staff newStaff = new Staff(name, phone, email, rol, status);
+        employees.add(newStaff);
+
+        return true;
+    }
+
 
     private void veterinaryClinic(){
         
 
-        new Habitat("Clinica veterinaria",calculateEnvironmentType(4), 27, 400, 40000000, 25, "activo");
+        myHabitats[0] =new Habitat("Clinica veterinaria", calculateEnvironmentType(4), 27, 400, 40000000, 25, "activo");
             
         
     }
@@ -82,6 +146,7 @@ public class Zoo {
 
             for (int i = 0; i < myHabitats.length; i++) {
                 if (myHabitats[i] == null) {
+
                     return true;
                 }
             }
@@ -91,17 +156,20 @@ public class Zoo {
     }
 
     public boolean addHabitats(String name, int environment, double temperature, double area, double budget, int capacity, String status  ){
-
-        if(hasAvailableHabitat()){
+        if(capacityMax < maxHabitats){
+                    if(hasAvailableHabitat()){
 
             for (int i = 0; i < myHabitats.length; i++) {
 
                 if (myHabitats[i] == null){
 
                 myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status);
+
+                capacityMax += capacity;
+
             return true;
         }
-    }
+    }}
 }return false;
 }
     public String getHabitats(){
@@ -114,7 +182,7 @@ public class Zoo {
 
                 if(myHabitats[i] != null){
 
-                    habitatsList +=  "\n" + myHabitats[i].getName();
+                    habitatsList +=  "\n" + myHabitats[i].getName() + " - " + myHabitats[i].getUniqueCode();
 
                 }    
                 

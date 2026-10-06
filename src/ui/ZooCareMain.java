@@ -1,4 +1,5 @@
 package ui;
+import model.Staff;
 import model.Zoo;
 import java.util.Scanner;
 
@@ -9,6 +10,7 @@ public class ZooCareMain {
 
     private static Zoo myZoo;
 
+    
     public static void main(String[] args){
 
         zooMenu();
@@ -26,8 +28,10 @@ public class ZooCareMain {
                     +"\n2. Consultar informacion general del zoologico."
                     +"\n3. Modificar informacion general del zoologico."
                     +"\n4. Registrar un trabajador."
-                    +"\n5. Registrar un habitat."
-                    +"\n6. Consultar informacion de habitat."
+                    +"\n5. Consultar informacion de un trabajador."
+                    +"\n6. Modificar informacion de un trabajador."
+                    +"\n7. Registrar un habitat."
+                    +"\n8. Consultar informacion de habitat."
                     +"\n0. Salir.\n"
                     +"\nIngrese la opcion que requiera acontinuacion: \n");
 
@@ -54,11 +58,19 @@ public class ZooCareMain {
                 break;
 
             case 5:
+                staffInformation();
+                break;
+
+            case 6:
+
+                modifyEmployee();
+                break;
+            case 7:
 
                 habitatsRegister();
                 break;
 
-            case 6:
+            case 8:
 
                 showHabitats();
                 break;
@@ -194,28 +206,39 @@ public class ZooCareMain {
     }
     }
     public static void staffRegister(){
-
-        System.out.println("\nDigita el nombre del trabajador: ");
-        String name = validarTexto();
-
-
-        System.out.println("\nDigite numero de telefono, tiene que tener 10 caracteres: ");
-        String phone = sc.nextLine();
-
-        System.out.println("\nDigite el E-mail del trabajador: ");
-        String email = validarTexto();
-
-        System.out.println("\nDigite el rol de el trabajador (cuidador o veterianario): ");
-        String rol = rolValidation();
-
-
-        boolean status = statusValidation();
         
+        if (myZoo != null){
 
-    }
+            System.out.println("\nDigita el nombre del trabajador: ");
+            String name = validarTexto();
+
+            System.out.println("\nDigite numero de telefono, tiene que tener 10 caracteres: ");
+            String phone = sc.nextLine();
+
+            System.out.println("\nDigite el E-mail del trabajador: ");
+            String email = validarTexto();
+
+            System.out.println("\nDigite el rol de el trabajador (cuidador o veterianario): ");
+            String rol = rolValidation();
+
+            boolean status = statusValidation();
+
+
+            boolean result = myZoo.addStaff(name, phone, email, rol, status);
+
+            if(result){
+
+                System.out.println("\n<<Trabajador registrado correctamente>>");
+
+            }else{
+
+                System.out.println("\n<<No se puede registrar el trabajador>>");
+            }
+
+    }}
     public static int environmentValidation(){
 
-             int environment = sc.nextInt();
+            int environment = sc.nextInt();
 
             while(true){
 
@@ -302,6 +325,111 @@ public class ZooCareMain {
     }
     return number;
 }
+    public static void staffInformation(){
+
+    if(myZoo != null){
+
+        System.out.println(myZoo.showStaffList());
+
+        System.out.println("\nDigite el codigo del empleado que desea consultar: ");
+        String codeStaff = sc.nextLine();
+        
+
+        Staff employee = myZoo.searchStaff(codeStaff);
+
+        if(employee != null){
+
+            System.out.println("\nNombre: " + employee.getName());
+            System.out.println("Telefono: " + employee.getPhone());
+            System.out.println("E-mail: " + employee.getEmail());
+            System.out.println("Rol: " + employee.getRol());
+            System.out.println("Estado: " + (employee.getStatus() ? "Activo" : "Inactivo"));
+
+        }else{
+            
+            System.out.println("\nNo se encontro el empleado.");
+        }
+    }else{
+
+        System.out.println("\nDebe ingresar los datos generales del zoologico primero.");
+    }
+}
+
+    public static void modifyEmployee(){
+
+    if(myZoo != null){
+
+        System.out.println("\nDigite el codigo del empleado que desea modificar: ");
+        String codeStaff = sc.nextLine();
+    
+
+        Staff employee = myZoo.searchStaff(codeStaff);
+
+        if(employee != null){
+
+            System.out.println("\nEmpleado encontrado: " + employee.getName());
+
+            System.out.println("\nQue informacion desea modificar del empleado?"
+                    + "\n1. Nombre."
+                    + "\n2. Telefono."
+                    + "\n3. E-mail."
+                    + "\n4. Rol."
+                    + "\n5. Estado.");
+
+            int modifyOptions = sc.nextInt();
+            sc.nextLine();
+
+            switch (modifyOptions) {
+
+                case 1:
+                    System.out.println("\nDigite el nuevo nombre del empleado:");
+                    String name = validarTexto();
+                    employee.setName(name);
+                    System.out.println("Nombre actualizado correctamente.");
+                    break;
+
+                case 2:
+                    System.out.println("\nDigite el nuevo telefono del empleado:");
+                    String phone = sc.nextLine();
+                    employee.setPhone(phone);
+                    System.out.println("Telefono actualizado correctamente.");
+                    break;
+
+                case 3:
+                    System.out.println("\nDigite el nuevo E-mail del empleado:");
+                    String email = validarTexto();
+                    employee.setEmail(email);
+                    System.out.println("E-mail actualizado correctamente.");
+                    break;
+
+                case 4:
+                    System.out.println("\nDigite el nuevo rol del empleado:");
+                    String rol = rolValidation();
+                    employee.setRol(rol);
+                    System.out.println("Rol actualizado correctamente.");
+                    break;
+
+                case 5:
+                    boolean status = statusValidation();
+                    employee.setStatus(status);
+                    System.out.println("Estado actualizado correctamente.");
+                    break;
+
+                default:
+                    System.out.println("Opcion no valida.");
+                    break;
+            }
+
+        }else{
+
+            System.out.println("\nNo se encontro el empleado.");
+        }
+
+    }else{
+
+        System.out.println("\nDebe ingresar los datos generales del zoologico primero.");
+    }
+}
     public static void habitatsRegister(){
 
         if (myZoo != null){
@@ -321,6 +449,7 @@ public class ZooCareMain {
             double area = areaValidation();
 
             int position = setPosition(area);
+
             
             System.out.println("\nDigite el presupuesto mensual del habitat: " );
             double budget = budgetValidation();
@@ -339,11 +468,15 @@ public class ZooCareMain {
 
             String status = habitatStatusValidation();
 
+
+
             boolean result = myZoo.addHabitats(name, environment, temperature, area, budget, capacity, status);
 
             if(result){
 
                 System.out.println("<<Habitat registrado correctamente>>");
+
+                myZoo.sumCapacityMax(capacity);
 
             }else{
                 System.out.println("<<No se puede registrar el habitat>>");
@@ -419,3 +552,4 @@ public class ZooCareMain {
 
 }
 }
+    
