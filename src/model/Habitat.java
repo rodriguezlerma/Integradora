@@ -11,7 +11,7 @@ public class Habitat {
     private double budget;
     private int capacity;
     private String status;
-
+    private ArrayList<Staff> assignedStaff;
     private ArrayList<Animal> myAnimals;
 
 
@@ -27,7 +27,7 @@ public class Habitat {
             this.capacity = capacity;
             this.status = status;
             uniqueCode = generateUniqueId();
-            
+            assignedStaff = new ArrayList<Staff>();
             myAnimals = new ArrayList<Animal>();
 
                     }
@@ -46,7 +46,7 @@ public class Habitat {
      * @return The type of environment in the habitat.
      */
 
-    public EnvironmentType environment(){
+    public EnvironmentType getEnvironment(){
 
         return environment;
     }
@@ -75,6 +75,27 @@ public class Habitat {
      * @return true if the animal was successfully added, false if the habitat is
      *         full.
      */
+  
+    public double getTemperature(){
+
+        return temperature;
+    }
+    public double getArea(){
+
+        return area;
+    }
+    public double getBudget(){
+
+        return budget;
+    }
+    public int getCapacity(){
+
+        return capacity;
+    }
+    public String getStatus(){
+
+        return status;
+    }
 
     public boolean addAnimals(Animal myAnimal){
 
@@ -100,5 +121,18 @@ public class Habitat {
 
     }
 
+    public boolean addStaff(Staff staff) {
+
+    if (staff == null) {
+        return false;
+    }
+
+    if (assignedStaff.contains(staff)) {
+        return false;
+    }
+
+    assignedStaff.add(staff);
+    return true;
+}
 
 }

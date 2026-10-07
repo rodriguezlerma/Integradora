@@ -55,6 +55,23 @@ public class Zoo {
         return null;
 
     }
+    public String habitatCaracterisics(String codeHabitat){
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null){
+
+            return "Nombre: " + habitat.getName() + "\n" +
+            "Codigo: " + habitat.getUniqueCode() + "\n" +
+            "Entorno: " + habitat.getEnvironment() + "\n" +
+            "Temperatura: " + habitat.getTemperature() + "\n" +
+            "Area: " + habitat.getArea() + "\n" +
+            "Presupuesto: " + habitat.getBudget() + "\n" +
+            "Capacidad: " + habitat.getCapacity() + "\n" +
+            "Estado: " + habitat.getStatus();
+        } else {
+            
+        }return "No se encontró el hábitat con el código proporcionado.";
+    }
 
     public String showStaffList(){
 
@@ -90,6 +107,10 @@ public class Zoo {
         return true;
     }
 
+    
+
+
+    
 
     private void veterinaryClinic(){
         
@@ -190,7 +211,7 @@ public class Zoo {
         }
         if (habitatsList.equals("")){
 
-            return "No hay animales en este habitat. ";
+            return "No hay hábitats registrados en el zoológico.";
         }
     }
     
@@ -220,6 +241,22 @@ public class Zoo {
         }
 
         return environmentList;
+    }
+
+    public Habitat searchHabitat(String codeHabitat){
+
+        for(int i = 0; i < myHabitats.length; i++){
+
+            if(myHabitats[i] != null){
+
+                if(myHabitats[i].getUniqueCode().equalsIgnoreCase(codeHabitat)){
+
+                    return myHabitats[i];
+                }
+            }
+        }
+
+        return null;
     }
 
 }

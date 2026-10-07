@@ -1,6 +1,7 @@
 package ui;
 import model.Staff;
 import model.Zoo;
+
 import java.util.Scanner;
 
 
@@ -75,7 +76,7 @@ public class ZooCareMain {
                 showHabitats();
                 break;
 
-            
+
         }
 
         }while( menu != 0);
@@ -527,6 +528,27 @@ public class ZooCareMain {
     return area;
 
     }
+
+    public static void consultHabitatInformation(){
+        if (myZoo != null){
+
+            myZoo.getHabitats();
+            System.out.println("\nDigite el codigo del habitat que desea consultar: ");
+            String codeHabitat = sc.nextLine();
+            if (myZoo.searchHabitat(codeHabitat) != null) {
+                
+                System.out.println("\nNombre: " + myZoo.searchHabitat(codeHabitat).getName());
+                System.out.println("Tipo de ambiente: " + myZoo.searchHabitat(codeHabitat).getEnvironment());
+                System.out.println("Temperatura: " + myZoo.searchHabitat(codeHabitat).getTemperature());
+                System.out.println("Area: " + myZoo.searchHabitat(codeHabitat).getArea());
+                System.out.println("Presupuesto: " + myZoo.searchHabitat(codeHabitat).getBudget());
+                System.out.println("Capacidad maxima: " + myZoo.searchHabitat(codeHabitat).getCapacity());
+                System.out.println("Estado: " + myZoo.searchHabitat(codeHabitat).getStatus());
+            } else {
+                System.out.println("\nNo se encontro el habitat.");
+            }
+        }}
+
     public static int setPosition(double area){
 
         int position = 0;
@@ -551,5 +573,6 @@ public class ZooCareMain {
     return position;
 
 }
+
 }
     
