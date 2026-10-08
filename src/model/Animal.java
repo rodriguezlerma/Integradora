@@ -12,12 +12,17 @@ public class Animal {
     private int yearOfBirth;
     private double weight;
     private String diet;
-    private String environment;
+    private EnvironmentType environment;
+    private String countryOfOrigin;
+    private String entryDate;
     private String healthStatus;
+    private Habitat habitat;
+    private boolean active;
     
 
     public Animal(String name, String species, String gender, int yearOfBirth, double weight, String diet,
-            String environment, String healthStatus) {
+            EnvironmentType environment, String countryOfOrigin, String entryDate,String healthStatus, 
+            Habitat habitat, boolean active) {
         this.name = name;
         this.species = species;
         this.gender = gender;
@@ -25,7 +30,13 @@ public class Animal {
         this.weight = weight;
         this.diet = diet;
         this.environment = environment;
+        this.countryOfOrigin = countryOfOrigin;
+        this.entryDate = entryDate;
         this.healthStatus = healthStatus;
+        this.habitat = habitat;
+        this.active = active;
+
+
         animalId = makeUniqueId();
 
 

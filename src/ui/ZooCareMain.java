@@ -639,5 +639,53 @@ public class ZooCareMain {
             System.out.println("\nNo se encontro el habitat.");
         }
 }
-    
-}
+    public static void  registerAnimals(){
+
+        if(myZoo != null){
+            System.out.println("Ingrese el nombre del animal: ");
+            String name = textValidation();
+
+            System.out.println("Digite la especie del animal: ");
+            String species = textValidation();
+
+            System.out.println("");
+                    this.name = name;
+        this.species = species;
+        this.gender = gender;
+        this.yearOfBirth = yearOfBirth;
+        this.weight = weight;
+        this.diet = diet;
+        this.environment = environment;
+        this.countryOfOrigin = countryOfOrigin;
+        this.entryDate = entryDate;
+        this.healthStatus = healthStatus;
+        this.habitat = habitat;
+        this.active = active;
+
+            
+
+
+        
+
+            
+        }else{
+            System.out.println("Se tiene que registrar el zoologico primero");
+        }
+    }
+    public static String genderValidation(){
+
+        String gender = sc.nextLine();
+
+        while(true){
+
+            if (gender.equals("")){
+
+                break;
+            }else{
+
+                
+            }
+
+        }
+    }
+}   
