@@ -1,5 +1,5 @@
 package ui;
-import model.Staff;
+
 import model.Zoo;
 
 import java.util.Scanner;
@@ -73,8 +73,11 @@ public class ZooCareMain {
 
             case 8:
 
-                showHabitats();
+                consultHabitatInformation();
                 break;
+
+            case 9:
+
 
 
         }
@@ -336,20 +339,8 @@ public class ZooCareMain {
         String codeStaff = sc.nextLine();
         
 
-        Staff employee = myZoo.searchStaff(codeStaff);
-
-        if(employee != null){
-
-            System.out.println("\nNombre: " + employee.getName());
-            System.out.println("Telefono: " + employee.getPhone());
-            System.out.println("E-mail: " + employee.getEmail());
-            System.out.println("Rol: " + employee.getRol());
-            System.out.println("Estado: " + (employee.getStatus() ? "Activo" : "Inactivo"));
-
-        }else{
-            
-            System.out.println("\nNo se encontro el empleado.");
-        }
+        System.out.println(myZoo.showStaffInformation(codeStaff));
+    
     }else{
 
         System.out.println("\nDebe ingresar los datos generales del zoologico primero.");
@@ -532,23 +523,14 @@ public class ZooCareMain {
     public static void consultHabitatInformation(){
         if (myZoo != null){
 
-            myZoo.getHabitats();
+            System.out.println(myZoo.getHabitats());
             System.out.println("\nDigite el codigo del habitat que desea consultar: ");
             String codeHabitat = sc.nextLine();
-            if (myZoo.searchHabitat(codeHabitat) != null) {
-                
-                System.out.println("\nNombre: " + myZoo.searchHabitat(codeHabitat).getName());
-                System.out.println("Tipo de ambiente: " + myZoo.searchHabitat(codeHabitat).getEnvironment());
-                System.out.println("Temperatura: " + myZoo.searchHabitat(codeHabitat).getTemperature());
-                System.out.println("Area: " + myZoo.searchHabitat(codeHabitat).getArea());
-                System.out.println("Presupuesto: " + myZoo.searchHabitat(codeHabitat).getBudget());
-                System.out.println("Capacidad maxima: " + myZoo.searchHabitat(codeHabitat).getCapacity());
-                System.out.println("Estado: " + myZoo.searchHabitat(codeHabitat).getStatus());
-            } else {
-                System.out.println("\nNo se encontro el habitat.");
-            }
-        }}
 
+            System.out.println(myZoo.habitatCaracterisics(codeHabitat));
+            
+    }
+    }
     public static int setPosition(double area){
 
         int position = 0;
@@ -573,6 +555,15 @@ public class ZooCareMain {
     return position;
 
 }
+    public static void modifiHabitats(){
+        if(myZoo != null){
 
+            System.out.println(myZoo.getHabitats());
+            System.out.println("\nDigite el codigo del habitat que desea modificar: ");
+            String codeHabitat = sc.nextLine();
+
+            myZoo.
+        }
+    }
 }
     

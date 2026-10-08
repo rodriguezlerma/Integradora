@@ -134,5 +134,25 @@ public class Habitat {
     assignedStaff.add(staff);
     return true;
 }
-
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setEnvironment(EnvironmentType environment) {
+        this.environment = environment;
+    }
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+    public void setArea(double area) {
+        this.area = area;
+    }
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

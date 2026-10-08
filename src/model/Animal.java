@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Animal {
 
-    private static int nexId = 1;
+    private static int nextId = 1;
 
     private String animalId;
     private String name;
@@ -33,12 +33,16 @@ public class Animal {
     }
     public String makeUniqueId() {
 
-        String id = "ANM0" + nexId;
-        nexId++;
+        String id = "ANM0" + nextId;
+        nextId++;
         return id;
 
     }
+    public int calculateAge() {
 
+        int currentYear = 2026;
+        return currentYear - yearOfBirth;
+    }
     public String getAnimalId() {
         return animalId;
     }

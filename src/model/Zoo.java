@@ -108,7 +108,22 @@ public class Zoo {
     }
 
     
+    public String showStaffInformation(String codeStaff){
 
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            return "Nombre: " + staff.getName() + "\n" +
+            "Codigo: " + staff.getUniqueId() + "\n" +
+            "Telefono: " + staff.getPhone() + "\n" +
+            "Correo: " + staff.getEmail() + "\n" +
+            "Rol: " + staff.getRol() + "\n" +
+            "Estado: " + (staff.getStatus() );
+        } else {
+            
+        }return "No se encontró el empleado con el código proporcionado.";
+    }
 
     
 
@@ -258,6 +273,6 @@ public class Zoo {
 
         return null;
     }
-
+    
 }
 
