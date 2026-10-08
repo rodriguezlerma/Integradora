@@ -120,6 +120,9 @@ public class Habitat {
         return animalList;
 
     }
+    public int getAnimalCount() {
+        return myAnimals.size();
+    }
 
     public boolean addStaff(Staff staff) {
 

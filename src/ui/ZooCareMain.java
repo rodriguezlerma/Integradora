@@ -33,6 +33,8 @@ public class ZooCareMain {
                     +"\n6. Modificar informacion de un trabajador."
                     +"\n7. Registrar un habitat."
                     +"\n8. Consultar informacion de habitat."
+                    +"\n9. Modificar informacion de un habitat."
+                    +"\n10. Registrar un animal."
                     +"\n0. Salir.\n"
                     +"\nIngrese la opcion que requiera acontinuacion: \n");
 
@@ -77,8 +79,8 @@ public class ZooCareMain {
                 break;
 
             case 9:
-
-
+                modifiHabitats();
+                break;
 
         }
 
@@ -90,19 +92,19 @@ public class ZooCareMain {
         
 
         System.out.println("Digite el nombre del zoologico: ");
-        String name = validarTexto();
+        String name = textValidation();
 
         System.out.println("Digite la ciudad: ");
-        String city =validarTexto();
+        String city =textValidation();
 
         System.out.println("Digite la direccion: ");
-        String address = validarTexto();
+        String address = textValidation();
 
         System.out.println("Digite el documento del representante legal: ");
-        String id = validarTexto();
+        String id = textValidation();
 
         System.out.println("Digite el nombre del representante legal: ");
-        String legalRepresentative = validarTexto();
+        String legalRepresentative = textValidation();
 
         System.out.println("Digite el presupuesto mensual del zoologico: ");
         double budget = budgetValidation();
@@ -122,7 +124,7 @@ public class ZooCareMain {
         }
 
     }
-    public static String validarTexto() {
+    public static String textValidation() {
 
     String text = sc.nextLine();
 
@@ -152,7 +154,7 @@ public class ZooCareMain {
         switch (generalOptions) {
             case 1:
                 System.out.println("Digita el nuevo nombre: ");
-                String name = validarTexto();
+                String name = textValidation();
                 
                 myZoo.setName(name);
 
@@ -160,7 +162,7 @@ public class ZooCareMain {
             case 2:
 
                 System.out.println("Digita la nueva ciudad: ");
-                String city = validarTexto();
+                String city = textValidation();
 
                 myZoo.setCity(city);
 
@@ -169,7 +171,7 @@ public class ZooCareMain {
             case 3:
 
                 System.out.println("Digita la nueva direccion: ");
-                String address = validarTexto();
+                String address = textValidation();
 
                 myZoo.setAddress(address);
 
@@ -178,7 +180,7 @@ public class ZooCareMain {
             case 4:
 
                 System.out.println("Digita el documento del representante legal: ");
-                String id = validarTexto();
+                String id = textValidation();
 
                 myZoo.setId(id);
 
@@ -187,7 +189,7 @@ public class ZooCareMain {
             case 5:
 
                 System.out.println("Digita el nombre del representante legal: ");
-                String legalRepresentative = validarTexto();
+                String legalRepresentative = textValidation();
 
                 myZoo.setLegalRepresentative(legalRepresentative);
 
@@ -214,13 +216,13 @@ public class ZooCareMain {
         if (myZoo != null){
 
             System.out.println("\nDigita el nombre del trabajador: ");
-            String name = validarTexto();
+            String name = textValidation();
 
             System.out.println("\nDigite numero de telefono, tiene que tener 10 caracteres: ");
             String phone = sc.nextLine();
 
             System.out.println("\nDigite el E-mail del trabajador: ");
-            String email = validarTexto();
+            String email = textValidation();
 
             System.out.println("\nDigite el rol de el trabajador (cuidador o veterianario): ");
             String rol = rolValidation();
@@ -314,21 +316,6 @@ public class ZooCareMain {
 
 
     }
-    public static double validationGreaterThanzero(){
-
-        double number = sc.nextDouble();
-
-        while (number > 0) {
-            
-        
-            if (number < 0 ){
-
-                System.out.println("\nDato ingresado incorrecto, debe ser un numero mayor a 0. Intentelo de nuevo: ");
-                number = sc.nextDouble();
-    }   
-    }
-    return number;
-}
     public static void staffInformation(){
 
     if(myZoo != null){
@@ -353,13 +340,11 @@ public class ZooCareMain {
 
         System.out.println("\nDigite el codigo del empleado que desea modificar: ");
         String codeStaff = sc.nextLine();
-    
 
-        Staff employee = myZoo.searchStaff(codeStaff);
 
-        if(employee != null){
+        if(myZoo.searchStaff(codeStaff) != null){
 
-            System.out.println("\nEmpleado encontrado: " + employee.getName());
+            System.out.println("\nEmpleado encontrado: " + myZoo.searchStaff(codeStaff).getName());
 
             System.out.println("\nQue informacion desea modificar del empleado?"
                     + "\n1. Nombre."
@@ -375,35 +360,40 @@ public class ZooCareMain {
 
                 case 1:
                     System.out.println("\nDigite el nuevo nombre del empleado:");
-                    String name = validarTexto();
-                    employee.setName(name);
+                    String name = textValidation();
+                    myZoo.setStaffName(codeStaff, name);
                     System.out.println("Nombre actualizado correctamente.");
                     break;
 
                 case 2:
                     System.out.println("\nDigite el nuevo telefono del empleado:");
-                    String phone = sc.nextLine();
-                    employee.setPhone(phone);
-                    System.out.println("Telefono actualizado correctamente.");
-                    break;
-
+                    while (true) {
+                        String phone = sc.nextLine();
+                        if (phone.length() == 10) {
+                            myZoo.setStaffPhone(codeStaff, phone);
+                            System.out.println("Telefono actualizado correctamente.");
+                            break;
+                        } else {
+                            System.out.println("El telefono debe tener 10 caracteres. Intentelo de nuevo: ");
+                        }
+                    }
                 case 3:
                     System.out.println("\nDigite el nuevo E-mail del empleado:");
-                    String email = validarTexto();
-                    employee.setEmail(email);
+                    String email = textValidation();
+                    myZoo.setStaffEmail(codeStaff, email);
                     System.out.println("E-mail actualizado correctamente.");
                     break;
 
                 case 4:
                     System.out.println("\nDigite el nuevo rol del empleado:");
                     String rol = rolValidation();
-                    employee.setRol(rol);
+                    myZoo.setStaffRol(codeStaff, rol);
                     System.out.println("Rol actualizado correctamente.");
                     break;
 
                 case 5:
                     boolean status = statusValidation();
-                    employee.setStatus(status);
+                    myZoo.setStaffStatus(codeStaff, status);
                     System.out.println("Estado actualizado correctamente.");
                     break;
 
@@ -428,7 +418,7 @@ public class ZooCareMain {
 
             System.out.println("\n---REGISTRAR HABITAT---\n");
             System.out.println("\nDigita el nombre del habitat: ");
-            String name = validarTexto();
+            String name = textValidation();
 
             System.out.println("Ingrese el tipo de ambiente: ");
             System.out.println(myZoo.getEnvironmentTypeList());
@@ -468,7 +458,7 @@ public class ZooCareMain {
 
                 System.out.println("<<Habitat registrado correctamente>>");
 
-                myZoo.sumCapacityMax(capacity);
+                myZoo.sumCapacityMax(position);
 
             }else{
                 System.out.println("<<No se puede registrar el habitat>>");
@@ -562,8 +552,92 @@ public class ZooCareMain {
             System.out.println("\nDigite el codigo del habitat que desea modificar: ");
             String codeHabitat = sc.nextLine();
 
-            myZoo.
+            if(myZoo.searchHabitat(codeHabitat) != null){
+
+                System.out.println("Que informacion desea modificar del habitat?"
+                    + "\n1. Nombre."
+                    + "\n2. Tipo de ambiente."
+                    + "\n3. Temperatura."
+                    + "\n4. Presupuesto mensual."
+                    + "\n5. Capacidad maxima."
+                    + "\n6. Estado.");
+
+                int modifyOptions = sc.nextInt();
+                sc.nextLine();
+
+                switch (modifyOptions) {
+
+                    case 1:
+                        System.out.println("\nDigite el nuevo nombre del habitat:");
+                        String name = textValidation();
+                        myZoo.setHabitatName(codeHabitat, name);
+                        System.out.println("Nombre actualizado correctamente.");
+                        break;
+
+                    case 2:
+                        System.out.println("\nDigite el nuevo tipo de ambiente del habitat:");
+                        System.out.println(myZoo.getEnvironmentTypeList());
+                        int environment = environmentValidation();
+                        myZoo.setHabitatEnvironmentType(codeHabitat, environment);
+                        System.out.println("Tipo de ambiente actualizado correctamente.");
+                        break;
+
+                    case 3:
+                        System.out.println("\nDigite la nueva temperatura del habitat:");
+                        double temperature = sc.nextDouble();
+                        myZoo.setHabitatTemperature(codeHabitat, temperature);
+                        System.out.println("Temperatura actualizada correctamente.");
+                        break;
+
+                    case 4:
+                        System.out.println("\nDigite el nuevo presupuesto mensual del habitat:");
+                        double budget = budgetValidation();
+                        myZoo.setHabitatBudget(codeHabitat, budget);
+                        System.out.println("Presupuesto mensual actualizado correctamente.");
+                        break;
+
+                    case 5:
+                        System.out.println("\nDigite la nueva capacidad maxima del habitat:");
+                        int capacity = sc.nextInt();
+                        while(capacity <= 0){
+
+                            System.out.println("\nDatos ingresados incorrectos, este dato debe ser mayor a 0. Intentelo de nuevo: ");
+                            capacity = sc.nextInt();
+                            
+
+                        }
+                        
+                        if(myZoo.setHabitatCapacity(codeHabitat, capacity)){
+
+                            System.out.println("Capacidad maxima actualizada correctamente.");
+                        }else{
+                            System.out.println("No se pudo actualizar la capacidad maxima.");
+                        }
+                        sc.nextLine();
+                        break;
+                    case 6:
+                        System.out.println("\nDigite el nuevo estado del habitat(activo, en mantenimiento, en construccion, retirado): ");
+                        String status = habitatStatusValidation();
+                            if((status.equals("en mantenimiento") || status.equals("en construccion") || status.equals("retirado"))&& myZoo.searchHabitat(codeHabitat).getAnimalCount() > 0){
+                            
+                                System.out.println("No se puede cambiar el estado del habitat a " + status + " porque tiene animales asignados.");
+                                break;
+                            }else {
+                                myZoo.setHabitatStatus(codeHabitat, status);
+                        }
+                        myZoo.setHabitatStatus(codeHabitat, status);
+                        
+                        System.out.println("Estado actualizado correctamente.");
+                        break;
+
+                    default:
+                        System.out.println("Opcion no valida.");
+                        break;
+            }
         }
-    }
+    }else{
+            System.out.println("\nNo se encontro el habitat.");
+        }
 }
     
+}

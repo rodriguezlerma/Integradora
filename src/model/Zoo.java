@@ -70,7 +70,7 @@ public class Zoo {
             "Estado: " + habitat.getStatus();
         } else {
             
-        }return "No se encontró el hábitat con el código proporcionado.";
+        }return "No se encontro el habitat con el codigo proporcionado.";
     }
 
     public String showStaffList(){
@@ -92,20 +92,9 @@ public class Zoo {
     }
 
     public boolean addStaff(String name, String phone, String email, String rol, boolean status){
-        
-        for(int i = 0; i < employees.size(); i++){
-            if(employees != null){
-                Staff newStaff = new Staff(name, phone, email, rol, status);
-                employees.set(i, newStaff);
-                return true;
-            }
-        }
-
         Staff newStaff = new Staff(name, phone, email, rol, status);
-        employees.add(newStaff);
-
-        return true;
-    }
+        return employees.add(newStaff);
+}
 
     
     public String showStaffInformation(String codeStaff){
@@ -119,7 +108,7 @@ public class Zoo {
             "Telefono: " + staff.getPhone() + "\n" +
             "Correo: " + staff.getEmail() + "\n" +
             "Rol: " + staff.getRol() + "\n" +
-            "Estado: " + (staff.getStatus() );
+            "Estado: " + (staff.getStatus() ? "Activo" : "Inactivo");
         } else {
             
         }return "No se encontró el empleado con el código proporcionado.";
@@ -193,17 +182,17 @@ public class Zoo {
 
     public boolean addHabitats(String name, int environment, double temperature, double area, double budget, int capacity, String status  ){
         if(capacityMax < maxHabitats){
-                    if(hasAvailableHabitat()){
+            if(hasAvailableHabitat()){
 
-            for (int i = 0; i < myHabitats.length; i++) {
+                for (int i = 0; i < myHabitats.length; i++) {
 
-                if (myHabitats[i] == null){
+                    if (myHabitats[i] == null){
 
-                myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status);
+                    myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status);
 
-                capacityMax += capacity;
+                    
 
-            return true;
+                return true;
         }
     }}
 }return false;
@@ -273,6 +262,150 @@ public class Zoo {
 
         return null;
     }
+    public boolean setStaffName(String codeStaff, String newName){
+
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            staff.setName(newName);
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
+    public boolean setStaffPhone(String codeStaff, String newPhone){
+
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            staff.setPhone(newPhone);
+
+            return true;
+        } else {
+            
+        }return false;
+    }
+    public boolean setStaffEmail(String codeStaff, String newEmail){
+
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            staff.setEmail(newEmail);
+
+            return true;
+        } else {
+            
+        }return false;
+    }
+    public boolean setStaffRol(String codeStaff, String newRol){
+
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            staff.setRol(newRol);
+
+            return true;
+        } else {
+            
+        }return false;
+    }
+    public boolean setStaffStatus(String codeStaff, boolean newStatus){
+
+        Staff staff = searchStaff(codeStaff);
+
+        if(staff != null){
+
+            staff.setStatus(newStatus);
+
+            return true;
+        } else {
+            
+        }return false;
+    }
+    public boolean setHabitatName(String codeHabitat, String newName){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null){
+
+            habitat.setName(newName);
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
+    public boolean setHabitatTemperature(String codeHabitat, double newTemperature){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null){
+
+            habitat.setTemperature(newTemperature);
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
     
+    
+    public boolean setHabitatBudget(String codeHabitat, double newBudget){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null){
+
+            habitat.setBudget(newBudget);
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
+    public boolean setHabitatEnvironmentType(String codeHabitat, int newEnvironment){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null){
+
+            habitat.setEnvironment(calculateEnvironmentType(newEnvironment));
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
+    public boolean setHabitatCapacity(String codeHabitat, int newCapacity){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null && newCapacity >= habitat.getAnimalCount()){
+
+            habitat.setCapacity(newCapacity);
+
+            return true;
+        } else {
+            
+        }return false;
+    }
+    public boolean setHabitatStatus(String codeHabitat, String newStatus){
+
+        Habitat habitat = searchHabitat(codeHabitat);
+
+        if(habitat != null && habitat.getAnimalCount() == 0){
+
+            habitat.setStatus(newStatus);
+
+            return true; 
+        } else {
+            
+        }return false;
+    }
 }
 
