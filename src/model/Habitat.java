@@ -61,21 +61,7 @@ public class Habitat {
 
         return name;
     }
-    /**
-     * Adds an animal to the habitat if there is available space.
-     *
-     * Preconditions:
-     * - The `myAnimal` parameter must not be null.
-     * - The 'myAnimals' list must be initialized.
-     *
-     * Postconditions:
-     * - If the habitat is not full, the animal is added to the `myAnimals` list.
-     *
-     * @param myAnimal The animal to be added to the habitat.
-     * @return true if the animal was successfully added, false if the habitat is
-     *         full.
-     */
-  
+
     public double getTemperature(){
 
         return temperature;
@@ -164,5 +150,14 @@ public class Habitat {
         }
         return null;
     }
+    /**
+    * Removes an animal from the habitat.
+    *
+    * @param animal The animal to remove.
+    * @return true if the animal was removed, false otherwise.
+    */
+    public boolean removeAnimal(Animal animal) {
+    return myAnimals.remove(animal);
     
+}
 }

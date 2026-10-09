@@ -118,4 +118,8 @@ public class Animal {
 
         this.healthStatus = healthStatus;
     }
+    public void setHabitat(Habitat habitat){
+
+        this.habitat = habitat;
+    }
 }

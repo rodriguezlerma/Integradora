@@ -35,6 +35,8 @@ public class ZooCareMain {
                     +"\n8. Consultar informacion de habitat."
                     +"\n9. Modificar informacion de un habitat."
                     +"\n10. Registrar un animal."
+                    +"\n11. Modificar datos de animal."
+                    +"\n12. Transladar a animal de habitat. "
                     +"\n0. Salir.\n"
                     +"\nIngrese la opcion que requiera acontinuacion: \n");
 
@@ -87,6 +89,10 @@ public class ZooCareMain {
                 break;
 
             case 11:
+                animalModification();
+
+            case 12:
+                relocateAnimal();   
 
         }
 
@@ -539,7 +545,9 @@ public class ZooCareMain {
             System.out.println("\nDigite el codigo del habitat que desea modificar: ");
             String codeHabitat = sc.nextLine();
 
-            if(myZoo.searchHabitat(codeHabitat) != null || codeHabitat.equalsIgnoreCase("HBT01")){
+            if(myZoo.searchHabitat(codeHabitat) != null ){
+
+                if(!codeHabitat.equalsIgnoreCase("hbt01")){
 
                 System.out.println("Que informacion desea modificar del habitat?"
                     + "\n1. Nombre."
@@ -622,6 +630,9 @@ public class ZooCareMain {
                         break;
             }
         }
+    }else{ 
+        System.out.println("\nNo puede modificar la clinica veterinaria.");
+    }
     }else{
             System.out.println("\nNo se encontro el habitat o intento modificar la clinica veterinaria.");
         }
@@ -681,7 +692,7 @@ public class ZooCareMain {
             if (result) {
                 System.out.println("\n<< Animal registrado y asignado exitosamente >>");
             } else {
-                System.out.println("\n<< No se pudo registrar el animal. Verifique que el código del hábitat exista, esté activo, sea compatible con el ambiente requerido y tenga capacidad disponible >>");
+                System.out.println("\n<< No se pudo registrar el animal. Verifique que el codigo del habitat exista, este activo, sea compatible con el ambiente requerido y tenga capacidad disponible >>");
             }
 
             } else {
@@ -773,6 +784,41 @@ public class ZooCareMain {
         System.out.println("\nRealice los datos generales del zoologico primero.");
     }
 }
+
+    public static void relocateAnimal() {
+    if (myZoo != null) {
+        System.out.println("\n--- TRASLADAR ANIMAL DE HABITAT ---");
+
+        System.out.println("\nDigite el codigo del animal a trasladar: ");
+        String codeAnimal = sc.nextLine();
+
+        String animalName = myZoo.searchAnimalInHabitat(codeAnimal).getName();
+
+        if (animalName != null) {
+            System.out.println("Animal a trasladar: " + animalName);
+
+            System.out.println("\nSeleccione el codigo del nuevo habitat de destino:");
+            System.out.println(myZoo.getHabitats());
+            String newCodeHabitat = sc.nextLine();
+
+            boolean success = myZoo.relocateAnimal(codeAnimal, newCodeHabitat);
+
+            if (success) {
+                System.out.println("\n<< Animal trasladado exitosamente al nuevo habitat >>");
+            } else {
+                System.out.println("\n<< No se pudo realizar el traslado, revise que lo codigos sean de entidades existentes >> ");
+            }
+
+        } else {
+            System.out.println("\nNo se encontro un animal activo con el codigo proporcionado.");
+        }
+
+    } else {
+        System.out.println("\nDebe ingresar los datos generales del zoologico primero.");
+    }
+}
+
+    
     public static String sexValidation(){
 
         String sex = sc.nextLine();
@@ -846,7 +892,7 @@ public class ZooCareMain {
 
         System.out.println(myZoo.getHabitats());
         System.out.println("\nDigite el codigo del habitat: ");
-        String codeHabitat = sc.nextLine();
+        String codeHabitat = sc.nextLine().toUpperCase();
 
         while (!myZoo.existsHabitat(codeHabitat)) {
             System.out.println("Incorrecto, el codigo no existe. Intentelo de nuevo: ");

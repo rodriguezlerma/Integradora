@@ -88,7 +88,9 @@ public class Zoo {
             "Area: " + habitat.getArea() + "\n" +
             "Presupuesto: " + habitat.getBudget() + "\n" +
             "Capacidad: " + habitat.getCapacity() + "\n" +
-            "Estado: " + habitat.getStatus();
+            "Estado: " + habitat.getStatus()+"\n"+
+            "Personal responsable: "+habitat.getAssignedStaff()+"\n"+
+            "Animales en el habitat: "+habitat.getAnimalList();
         } else {
             
         }return "No se encontro el habitat con el codigo proporcionado.";
@@ -319,6 +321,21 @@ public boolean addAnimal(String name, String species, String sex, int yearOfBirt
     }
     EnvironmentType requiredEnvironmentType = calculateEnvironmentType(environmentOption);
 
+    if (searchHabitat(codeHabitat).getName().equalsIgnoreCase("Clinica veterinaria")){
+
+        if(healthStatus.equalsIgnoreCase("cuarentena") || healthStatus.equalsIgnoreCase("recuperacion")){
+            
+            if(habitat.getStatus().equalsIgnoreCase("activo") &&
+            habitat.getAnimalCount() < habitat.getCapacity()){
+
+                Animal newAnimal = new Animal(name, species, sex, yearOfBirth, weight, diet, 
+                                    requiredEnvironmentType, countryOfOrigin, entryDate, 
+                                    healthStatus,lifeStage, habitat);
+                    return habitat.addAnimals(newAnimal);
+            }
+
+        }
+    }
     if (habitat.getStatus().equalsIgnoreCase("activo") &&
         habitat.getEnvironment().equals(requiredEnvironmentType) &&
         habitat.getAnimalCount() < habitat.getCapacity()) {
@@ -595,9 +612,55 @@ public boolean addAnimal(String name, String species, String sex, int yearOfBirt
                 "Año de entrada al zoologico: "+animal.getEntryDate()+
                 "Tipo de dieta: "+animal.getDiet()+
                 "Estado de salud: "+animal.getHealthStatus()+
-                "Etapa de vida: "+animal.getLifeStage();
-
-
+                "Etapa de vida: "+animal.getLifeStage()+
+                "Habitat asignado: "+animal.getHabitat().getName();
 
     }
+
+    /**
+ * Relocates an active animal to a new habitat if business rules are met.
+ *
+ * @param codeAnimal     The unique identifier of the animal.
+ * @param newCodeHabitat The unique code of the destination habitat.
+ * @return true if the relocation was successful, false otherwise.
+ */
+    public boolean relocateAnimal(String codeAnimal, String newCodeHabitat) {
+
+    Animal animal = searchAnimalInHabitat(codeAnimal);
+    if (animal == null) {
+        return false;
+    }
+
+    Habitat destination = searchHabitat(newCodeHabitat);
+    if (destination == null) {
+        return false;
+    }
+
+    Habitat currentHabitat = animal.getHabitat();
+
+    if (currentHabitat != null && currentHabitat.getUniqueCode().equalsIgnoreCase(destination.getUniqueCode())) {
+        return false;
+    }
+
+    boolean isEnvironmentCompatible = (destination.getEnvironment() == EnvironmentType.MEDICAL) || 
+                                        (destination.getEnvironment() == animal.getEnvironment());
+
+    if (destination.getStatus().equalsIgnoreCase("activo") &&
+        isEnvironmentCompatible &&
+        destination.getAnimalCount() < destination.getCapacity()) {
+
+        if (currentHabitat != null) {
+            currentHabitat.removeAnimal(animal);
+        }
+
+        destination.addAnimals(animal);
+        animal.setHabitat(destination);
+
+        return true;
+    }
+
+    return false; 
 }
+
+    }
+
