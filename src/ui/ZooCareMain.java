@@ -79,8 +79,14 @@ public class ZooCareMain {
                 break;
 
             case 9:
-                modifiHabitats();
+                habitatModification();
                 break;
+
+            case 10:
+                registerAnimals();
+                break;
+
+            case 11:
 
         }
 
@@ -429,9 +435,6 @@ public class ZooCareMain {
 
             System.out.println("\nIngresa la area del habitat: ");
             double area = areaValidation();
-
-            int position = setPosition(area);
-
             
             System.out.println("\nDigite el presupuesto mensual del habitat: " );
             double budget = budgetValidation();
@@ -450,15 +453,18 @@ public class ZooCareMain {
 
             String status = habitatStatusValidation();
 
+            System.out.println(myZoo.showStaffList());
+            System.out.println("Ingrese el Id del personal responsable que asignara al habitat: ");
+            String assignedStaffCode = sc.nextLine();
 
 
-            boolean result = myZoo.addHabitats(name, environment, temperature, area, budget, capacity, status);
+
+            boolean result = myZoo.addHabitats(name, environment, temperature, area, budget, capacity, status, assignedStaffCode);
 
             if(result){
 
                 System.out.println("<<Habitat registrado correctamente>>");
 
-                myZoo.sumCapacityMax(position);
 
             }else{
                 System.out.println("<<No se puede registrar el habitat>>");
@@ -515,44 +521,25 @@ public class ZooCareMain {
 
             System.out.println(myZoo.getHabitats());
             System.out.println("\nDigite el codigo del habitat que desea consultar: ");
-            String codeHabitat = sc.nextLine();
+            String codeHabitat = sc.nextLine().toLowerCase();
 
             System.out.println(myZoo.habitatCaracterisics(codeHabitat));
             
-    }
-    }
-    public static int setPosition(double area){
+    }else{
 
-        int position = 0;
-
-        if(area > 0 && area <= 100){
-
-            position = 1;
-
-        }else if(area > 100 && area <= 200){
-
-            position = 2;
-
-        }else if(area > 200 && area <= 300){
-
-            position = 3;
-
-        }else if (area > 300 && area <= 400){
-
-            position = 4;
+        System.out.println("Ingrese los datos del zoologico primero");
 
     }
-    return position;
-
 }
-    public static void modifiHabitats(){
+
+    public static void habitatModification(){
         if(myZoo != null){
 
             System.out.println(myZoo.getHabitats());
             System.out.println("\nDigite el codigo del habitat que desea modificar: ");
             String codeHabitat = sc.nextLine();
 
-            if(myZoo.searchHabitat(codeHabitat) != null){
+            if(myZoo.searchHabitat(codeHabitat) != null || codeHabitat.equalsIgnoreCase("HBT01")){
 
                 System.out.println("Que informacion desea modificar del habitat?"
                     + "\n1. Nombre."
@@ -636,7 +623,7 @@ public class ZooCareMain {
             }
         }
     }else{
-            System.out.println("\nNo se encontro el habitat.");
+            System.out.println("\nNo se encontro el habitat o intento modificar la clinica veterinaria.");
         }
 }
     public static void  registerAnimals(){
@@ -648,44 +635,224 @@ public class ZooCareMain {
             System.out.println("Digite la especie del animal: ");
             String species = textValidation();
 
-            System.out.println("");
-                    this.name = name;
-        this.species = species;
-        this.gender = gender;
-        this.yearOfBirth = yearOfBirth;
-        this.weight = weight;
-        this.diet = diet;
-        this.environment = environment;
-        this.countryOfOrigin = countryOfOrigin;
-        this.entryDate = entryDate;
-        this.healthStatus = healthStatus;
-        this.habitat = habitat;
-        this.active = active;
+            System.out.println("Digite el sexo del animal (macho or hembra):");
+            String sex = sexValidation();
 
+            System.out.println("Digite el año de nacimiento del animal (YYYY): ");
+            int yearOfBirth = yearValidation();
+            sc.nextLine();
+
+            System.out.println("Digite el peso del animal: ");
+            double weight = weightValidation();
+            sc.nextLine();
+
+            System.out.println("Tipo de dieta:\n\nherbivora\ncarnivora\nomnivora\ninsectivora\n\nIngrese el correspondiente a su caso: ");
+            String diet = dietValidation();
+
+            System.out.println(myZoo.getEnvironmentTypeList());
+            int environment = environmentValidation();
+            sc.nextLine();
+
+            System.out.println("Digite el lugar de origen del animal: ");
+            String countryOfOrigin = textValidation();
             
+            System.out.println("Ingrese la fecha de entrada del animal con el siguiente formato: (DD/MM/AAAA): ");
+            String entryDate = textValidation();
+
+            System.out.println("Digite el estado de salud del animal: \n\nSaludable \nCuarentena \nRecuperacion \nEn observacion: ");
+            String healthStatus = healthStatusValidation();
+
+            System.out.println("Digite el estado de vida del animal (juvenil o adulto): ");
+            String lifeStage = sc.nextLine().toLowerCase();
+            while(!(lifeStage.equals("juvenil") || lifeStage.equals("adulto"))){
+
+                System.out.println("Datos incorrectos, intentelo de nuevo: ");
+                lifeStage = sc.nextLine().toLowerCase();
+
+            }
+
+            System.out.println("¿A que habitat sera asignado?: ");
+            String codeHabitat = habitatCodeValidation();
 
 
-        
+            boolean result = myZoo.addAnimal(name, species, sex, yearOfBirth, weight, diet, 
+                                        environment, countryOfOrigin, entryDate, 
+                                        healthStatus,lifeStage, codeHabitat);
+            if (result) {
+                System.out.println("\n<< Animal registrado y asignado exitosamente >>");
+            } else {
+                System.out.println("\n<< No se pudo registrar el animal. Verifique que el código del hábitat exista, esté activo, sea compatible con el ambiente requerido y tenga capacidad disponible >>");
+            }
 
-            
-        }else{
-            System.out.println("Se tiene que registrar el zoologico primero");
+            } else {
+                System.out.println("Se tiene que registrar el zoologico primero.");
+            }
         }
-    }
-    public static String genderValidation(){
+        
+    public static void animalModification(){
 
-        String gender = sc.nextLine();
+        if (myZoo != null){
+
+            if(!myZoo.getAllAnimalList().equals("")){
+
+                System.out.println(myZoo.getAllAnimalList());
+                System.out.println("Digite el codigo del animal que desea modificar: ");
+                String animalId = sc.nextLine();
+                if(myZoo.animalExist(animalId)){
+
+                    System.out.println("\nOpciones modificables:\n"+
+                                        "\n1. Nombre."+
+                                        "\n2. Peso."+
+                                        "\n3. Tipo de dieta."+
+                                        "\n4. Etapa de vida."+
+                                        "\n5. Estado de salud."+
+                                        "\n\nSeleccione la opcion que requiera: ");
+                    
+                    int option = sc.nextInt();
+                    sc.nextLine();
+
+                    switch (option) {
+
+                        case 1:
+                            System.out.println("\nDigite el nuevo nombre:");
+                            String name = textValidation();
+                            myZoo.setAnimalName(animalId, name);
+                            System.out.println("Nombre actualizado correctamente.");
+                            break;
+
+                        case 2:
+                            System.out.println("\nDigite el nuevo peso (kg):");
+                            double weight = weightValidation();
+                            sc.nextLine();
+                            myZoo.setAnimalWeight(animalId, weight);
+                            System.out.println("Peso actualizado correctamente.");
+                            break;
+
+                        case 3:
+                            System.out.println("\nDigite el nuevo tipo de dieta (herbivora, carnivora, omnivora, insectivora):");
+                            String diet = dietValidation();
+                            myZoo.setAnimalDiet(animalId, diet);
+                            System.out.println("Tipo de dieta actualizado correctamente.");
+                            break;
+
+                        case 4:
+                            System.out.println("\nDigite la nueva etapa de vida (juvenil o adulto):");
+                            String lifeStage = sc.nextLine().toLowerCase();
+                            while(!(lifeStage.equals("juvenil") || lifeStage.equals("adulto"))){
+                            System.out.println("Datos incorrectos, intentelo de nuevo: ");
+                            lifeStage = sc.nextLine().toLowerCase();
+
+                            }
+
+                            System.out.println("Etapa de vida actualizada correctamente.");
+                            break;
+
+                        case 5:
+                            System.out.println("\nDigite el nuevo estado de salud (Saludable, Cuarentena, Recuperacion, En observacion):");
+                            String healthStatus = healthStatusValidation();
+                            myZoo.setAnimalHealthStatus(animalId, healthStatus);
+                            System.out.println("Estado de salud actualizado correctamente.");
+                            break;
+
+                        default:
+                            System.out.println("Opcion no valida.");
+                            break;
+                            }
+
+
+                }else{
+
+                    System.out.println("\nEl codigo digitado no esta asociado a ningun animal.");
+                }
+
+        }else{
+            System.out.println("No hay animales registrados. ");
+        }
+        
+    }else{
+        System.out.println("\nRealice los datos generales del zoologico primero.");
+    }
+}
+    public static String sexValidation(){
+
+        String sex = sc.nextLine();
 
         while(true){
 
-            if (gender.equals("")){
+            if (sex.equals("macho") || sex.equals("hembra")){
 
-                break;
+                return sex;
+                
             }else{
+
+                System.out.println("Intentelo de nuevo: ");
+                sex = sc.nextLine();
 
                 
             }
 
         }
     }
+    public static int yearValidation(){
+
+        int year = sc.nextInt();
+        
+        while(year <= 0 || year > 2026){
+
+            System.out.println("Datos incorrectos, el año tiene que estar entre 1 y 2026. Intentelo de nuevo: ");
+            year = sc.nextInt();
+        }
+        return year;
+    }
+    public static String dietValidation(){
+
+        String diet = sc.nextLine();
+
+        while(true){
+
+            if (diet.equals("herbivora") || diet.equals("carnivora") || diet.equals("omnivora") || diet.equals("insectivora")){
+                
+            return diet;
+
+            }else{
+                System.out.println("\nDatos incorretos. Intentelo de nuevo: ");
+            }
+        }
+    }
+    public static String healthStatusValidation(){
+
+        String healthSatus = sc.nextLine().toLowerCase();
+
+        while(!(healthSatus.equals("saludable") || healthSatus.equals("cuarentena") || healthSatus.equals("recuperacion") || healthSatus.equals("en observacion"))){
+        
+            System.out.println("Datos incorrectos, intentelo de nuevo: ");
+            healthSatus = sc.nextLine().toLowerCase();
+    }
+    return healthSatus;
+    }
+    
+    public static double weightValidation(){
+
+        double weight = sc.nextDouble();
+        while(weight <= 0){
+                System.out.println("\nDatos incorrectos, el peso no puede ser menor o igual a cero. Intentelo de nuevo.");
+                weight = sc.nextDouble();
+            }
+        return weight;
+
+        
+    }
+    public static String habitatCodeValidation() {
+
+        System.out.println(myZoo.getHabitats());
+        System.out.println("\nDigite el codigo del habitat: ");
+        String codeHabitat = sc.nextLine();
+
+        while (!myZoo.existsHabitat(codeHabitat)) {
+            System.out.println("Incorrecto, el codigo no existe. Intentelo de nuevo: ");
+            codeHabitat = sc.nextLine().toLowerCase();
+    }
+
+    return codeHabitat;
+}
 }   

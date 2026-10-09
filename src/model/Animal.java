@@ -1,5 +1,5 @@
 package model;
-import java.util.ArrayList;
+
 
 public class Animal {
 
@@ -8,7 +8,7 @@ public class Animal {
     private String animalId;
     private String name;
     private String species;
-    private String gender;
+    private String sex;
     private int yearOfBirth;
     private double weight;
     private String diet;
@@ -16,16 +16,17 @@ public class Animal {
     private String countryOfOrigin;
     private String entryDate;
     private String healthStatus;
+    private String lifeStage;
     private Habitat habitat;
     private boolean active;
     
 
-    public Animal(String name, String species, String gender, int yearOfBirth, double weight, String diet,
+    public Animal(String name, String species, String sex, int yearOfBirth, double weight, String diet,
             EnvironmentType environment, String countryOfOrigin, String entryDate,String healthStatus, 
-            Habitat habitat, boolean active) {
+            String lifeStage,Habitat habitat) {
         this.name = name;
         this.species = species;
-        this.gender = gender;
+        this.sex = sex;
         this.yearOfBirth = yearOfBirth;
         this.weight = weight;
         this.diet = diet;
@@ -33,8 +34,10 @@ public class Animal {
         this.countryOfOrigin = countryOfOrigin;
         this.entryDate = entryDate;
         this.healthStatus = healthStatus;
+        this.lifeStage = lifeStage;
         this.habitat = habitat;
-        this.active = active;
+        this.active = true;
+
 
 
         animalId = makeUniqueId();
@@ -49,7 +52,7 @@ public class Animal {
         return id;
 
     }
-    public int calculateAge() {
+    public int getAge() {
 
         int currentYear = 2026;
         return currentYear - yearOfBirth;
@@ -60,5 +63,59 @@ public class Animal {
     
     public String getName() {
         return name;
+    }
+    public String getSpecies() {
+        return species;
+    }
+    public String getSex() {
+        return sex;
+    }
+    public double getWeight() {
+        return weight;
+    }
+    public String getDiet() {
+        return diet;
+    }
+    public EnvironmentType getEnvironment() {
+        return environment;
+    }
+    public String getCountryOfOrigin() {
+        return countryOfOrigin;
+    }
+    public String getEntryDate() {
+        return entryDate;
+    }
+    public String getHealthStatus() {
+        return healthStatus;
+    }
+    public String getLifeStage() {
+        return lifeStage;
+    }
+    public boolean isActive() {
+        return active;
+    }
+    public Habitat getHabitat(){
+
+        return habitat;
+    }
+    public void setName(String name){
+
+        this.name = name;
+    }
+    public void setWeight(double weight){
+
+        this.weight = weight;
+    }
+    public void setDiet(String diet){
+
+        this.diet = diet;
+    }
+    public void setLifeStage(String lifeStage){
+
+        this.lifeStage = lifeStage;
+    }
+    public void setHealthStatus(String healthStatus){
+
+        this.healthStatus = healthStatus;
     }
 }

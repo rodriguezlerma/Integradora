@@ -36,10 +36,31 @@ public class Zoo {
         veterinaryClinic();
 
     }
-    public void sumCapacityMax(int position){
-        capacityMax += position;
+
+    public int setPosition(double area){
+
+        int position = 0;
+
+        if(area > 0 && area <= 100){
+
+            position = 1;
+
+        }else if(area > 100 && area <= 200){
+
+            position = 2;
+
+        }else if(area > 200 && area <= 300){
+
+            position = 3;
+
+        }else if (area > 300 && area <= 400){
+
+            position = 4;
 
     }
+    return position;
+
+}
 
 
     public Staff searchStaff(String codeStaff){
@@ -119,7 +140,7 @@ public class Zoo {
     private void veterinaryClinic(){
         
 
-        myHabitats[0] =new Habitat("Clinica veterinaria", calculateEnvironmentType(4), 27, 400, 40000000, 25, "activo");
+        myHabitats[0] =new Habitat("Clinica veterinaria", calculateEnvironmentType(4), 27, 400, 40000000, 25, "activo", null);
             
         
     }
@@ -180,23 +201,29 @@ public class Zoo {
     
     }
 
-    public boolean addHabitats(String name, int environment, double temperature, double area, double budget, int capacity, String status  ){
-        if(capacityMax < maxHabitats){
-            if(hasAvailableHabitat()){
+    public boolean addHabitats(String name, int environment, double temperature, double area, double budget, int capacity, String status, String assignedStaffCode ){
+        int requiredPositions =setPosition(area);
+        Staff employee = searchStaff(assignedStaffCode);
 
+        if (employee == null || !employee.getStatus()) {
+
+            return false;
+    }
+
+        if((capacityMax + requiredPositions) <= maxHabitats){
                 for (int i = 0; i < myHabitats.length; i++) {
 
                     if (myHabitats[i] == null){
 
-                    myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status);
-
+                    myHabitats[i] = new Habitat(name, calculateEnvironmentType(environment),temperature, area, budget, capacity, status, employee);
                     
-
-                return true;
+                        capacityMax += requiredPositions;
+                        return true;
         }
     }}
-}return false;
+    return false;
 }
+
     public String getHabitats(){
 
         String habitatsList = "";
@@ -221,6 +248,9 @@ public class Zoo {
     
     return habitatsList;
 
+    }
+    public boolean existsHabitat(String codeHabitat) {
+        return searchHabitat(codeHabitat) != null;
     }
     public EnvironmentType calculateEnvironmentType (int environmentOpcion){
 
@@ -262,6 +292,47 @@ public class Zoo {
 
         return null;
     }
+
+    /**
+ * Registers a new active animal in the zoo and assigns it to a valid habitat.
+ *
+ * @param name              The name of the animal.
+ * @param species           The species of the animal.
+ * @param sex               The sex/gender of the animal (macho or hembra).
+ * @param yearOfBirth       The year of birth of the animal.
+ * @param weight            The current weight of the animal in kg.
+ * @param diet              The diet type (herbivora, carnivora, omnivora, insectivora).
+ * @param environmentOption The index of the required environment type.
+ * @param countryOfOrigin   The country of origin.
+ * @param entryDate         The entry date into the zoo (DD/MM/YYYY).
+ * @param healthStatus      The health status (Saludable, Cuarentena, Recuperacion, En observacion).
+ * @param codeHabitat       The unique code of the habitat to assign the animal.
+ * @return true if the animal was successfully registered and assigned; false otherwise.
+ */
+public boolean addAnimal(String name, String species, String sex, int yearOfBirth, double weight, 
+                        String diet, int environmentOption, String countryOfOrigin, 
+                        String entryDate, String healthStatus,String lifeStage, String codeHabitat) {
+
+    Habitat habitat = searchHabitat(codeHabitat);
+    if (habitat == null) {
+        return false;
+    }
+    EnvironmentType requiredEnvironmentType = calculateEnvironmentType(environmentOption);
+
+    if (habitat.getStatus().equalsIgnoreCase("activo") &&
+        habitat.getEnvironment().equals(requiredEnvironmentType) &&
+        habitat.getAnimalCount() < habitat.getCapacity()) {
+
+
+        Animal newAnimal = new Animal(name, species, sex, yearOfBirth, weight, diet, 
+                                    requiredEnvironmentType, countryOfOrigin, entryDate, 
+                                    healthStatus,lifeStage, habitat);
+
+        return habitat.addAnimals(newAnimal);
+    }
+
+    return false; 
+}
     public boolean setStaffName(String codeStaff, String newName){
 
         Staff staff = searchStaff(codeStaff);
@@ -407,5 +478,126 @@ public class Zoo {
             
         }return false;
     }
+    public String getAllAnimalList(){
+
+        String animalList = "";
+
+        for (int i = 0; i < myHabitats.length; i++) {
+
+            if(myHabitats[i] != null){
+
+                animalList+= myHabitats[i].getAnimalList();
+            
+        }
+    }
+    return animalList;
+}
+    public Animal searchAnimalInHabitat(String animalId){
+
+        if (myHabitats != null){
+            for (int i = 0; i < myHabitats.length; i++) {
+                if(myHabitats[i] != null){
+
+                    Animal animalFound = myHabitats[i].searchAnimal(animalId);
+
+                    if(animalFound != null){
+
+                        return animalFound;
+                    }
+
+            }
+            }
+        }
+        return null;
+    }
+    public boolean setAnimalName(String animalCode, String newName){
+
+        Animal animal = searchAnimalInHabitat(animalCode);
+
+        if(animal != null){
+            
+            animal.setName(newName);
+            return true;
+        }
+        return false;
+    }
+    public boolean setAnimalWeight(String codeAnimal, double newWeight) {
+
+        Animal animal = searchAnimalInHabitat(codeAnimal);
+
+        if (animal != null ) {
+
+            animal.setWeight(newWeight);
+
+            return true;
+        }
+        return false;
 }
 
+    public boolean setAnimalDiet(String codeAnimal, String newDiet) {
+
+        Animal animal = searchAnimalInHabitat(codeAnimal);
+
+        if (animal != null) {
+
+            animal.setDiet(newDiet);
+
+            return true;
+        }
+        return false;
+}
+
+    public boolean setAnimalLifeStage(String codeAnimal, String newLifeStage) {
+
+        Animal animal = searchAnimalInHabitat(codeAnimal);
+
+        if (animal != null) {
+
+            animal.setLifeStage(newLifeStage);
+
+            return true;
+        }
+        return false;
+}
+
+    public boolean setAnimalHealthStatus(String codeAnimal, String newHealthStatus) {
+
+        Animal animal = searchAnimalInHabitat(codeAnimal);
+
+        if (animal != null) {
+
+            animal.setHealthStatus(newHealthStatus);
+
+            return true;
+        }
+        return false;
+}
+    public boolean animalExist(String codeAnimal){
+
+        if(searchAnimalInHabitat(codeAnimal) != null){
+
+            return true;
+        }
+    return false;
+    }
+    public String showAnimalInformation(String codeAnimal){
+
+        Animal animal = searchAnimalInHabitat(codeAnimal);
+
+
+        return "Nombre: "+animal.getName()+
+                "Codigo del animal: "+animal.getAnimalId()+
+                "Especie: "+animal.getSpecies()+
+                "Sexo: "+animal.getSex()+
+                "Peso: "+animal.getWeight()+
+                "Edad: "+animal.getAge()+
+                "Lugar de origen:  "+animal.getCountryOfOrigin()+
+                "Año de entrada al zoologico: "+animal.getEntryDate()+
+                "Tipo de dieta: "+animal.getDiet()+
+                "Estado de salud: "+animal.getHealthStatus()+
+                "Etapa de vida: "+animal.getLifeStage();
+
+
+
+    }
+}

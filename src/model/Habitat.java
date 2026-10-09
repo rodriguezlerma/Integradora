@@ -11,13 +11,13 @@ public class Habitat {
     private double budget;
     private int capacity;
     private String status;
-    private ArrayList<Staff> assignedStaff;
+    private Staff assignedStaff;
     private ArrayList<Animal> myAnimals;
 
 
 
     public Habitat(String name, EnvironmentType environment, double temperature, double area,
-        double budget, int capacity, String status){
+        double budget, int capacity, String status, Staff assignedStaff ){
 
             this.name = name;
             this.environment = environment;  //option
@@ -26,8 +26,8 @@ public class Habitat {
             this.budget = budget;
             this.capacity = capacity;
             this.status = status;
+            this.assignedStaff = assignedStaff;
             uniqueCode = generateUniqueId();
-            assignedStaff = new ArrayList<Staff>();
             myAnimals = new ArrayList<Animal>();
 
                     }
@@ -96,7 +96,10 @@ public class Habitat {
 
         return status;
     }
+    public Staff getAssignedStaff(){
 
+        return assignedStaff;
+    }
     public boolean addAnimals(Animal myAnimal){
 
 
@@ -115,7 +118,7 @@ public class Habitat {
 
         for (int i = 0; i < myAnimals.size(); i++){
 
-            animalList += myAnimals.get(i).getName() + "\n";
+            animalList += myAnimals.get(i).getName() + "-"+myAnimals.get(i).getAnimalId()+"\n";
         }
         return animalList;
 
@@ -124,19 +127,10 @@ public class Habitat {
         return myAnimals.size();
     }
 
-    public boolean addStaff(Staff staff) {
+    public void setAssignedStaff(Staff assignedStaff){
 
-    if (staff == null) {
-        return false;
+        this.assignedStaff = assignedStaff;
     }
-
-    if (assignedStaff.contains(staff)) {
-        return false;
-    }
-
-    assignedStaff.add(staff);
-    return true;
-}
     public void setName(String name) {
         this.name = name;
     }
@@ -158,4 +152,17 @@ public class Habitat {
     public void setStatus(String status) {
         this.status = status;
     }
+    public Animal searchAnimal(String animalId){
+
+        for (int i = 0; i < myAnimals.size(); i++) {
+
+            if(myAnimals.get(i).getAnimalId().equalsIgnoreCase(animalId)){
+
+                return myAnimals.get(i);
+            }
+            
+        }
+        return null;
+    }
+    
 }
